@@ -1,0 +1,4 @@
+test_varialbe:
+  stage: test
+  script:
+    - echo $CI_JOB_STAGE

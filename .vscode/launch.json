@@ -1,0 +1,28 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+    
+        {
+            "name": "(Windows) 启动",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/Megvii_threadflow/TestTool.exe",
+            // "args": ["--gtest_filter=flowtest*"],
+            "args": ["--gtest_filter=flowplugin*"],
+            // "args": ["--gtest_filter=boostdlltest*"],
+            // "args": ["--gtest_filter=std.*"],
+            // "args": ["--gtest_filter=cpuid.*"],
+            // "args": ["--gtest_filter=NodeTest*"],
+            // "args": ["--gtest_filter=icetest*"],
+            // "args": ["--gtest_filter=threadpool*"],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}/Megvii_threadflow",
+            "environment": [],
+            "externalConsole": false,
+            "preLaunchTask": "buildDebug"
+        }
+    ]
+}
