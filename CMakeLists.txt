@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.18)
-set(PNAME threadflow)
+set(PNAME magicflow)
 project(${PNAME})
 set(CMAKE_CXX_STANDARD 14)
 execute_process(COMMAND git rev-parse --short HEAD
@@ -12,10 +12,7 @@ add_definitions(-DBOOST_BIND_GLOBAL_PLACEHOLDERS)
 include_directories(${CMAKE_SOURCE_DIR}/src)
 
 include(FetchLibHelper.cmake)
-
-# src file config
-file(GLOB src src/*.cpp src/*.c src/core/*.cpp)
-file(GLOB head src/*.h src/*.hpp src/core/*.h)
+include(LibHelper.cmake)
 
 # boost
 # set(BoostLib boost_1_74_0-x86-v141)
@@ -47,31 +44,28 @@ CopyLibFileToSource(opencv-249.all.dynamic x86/vc12/bin/opencv_highgui249d.dll)
 CopyLibFileToSource(opencv-249.all.dynamic x86/vc12/bin/opencv_imgproc249d.dll)
 
 
+include_directories(${CMAKE_SOURCE_DIR}/src/core/common)
 # json config 
-set(JSON_DIR ${CMAKE_SOURCE_DIR}/3rdPart/jsoncpp)
-file(GLOB json_src ${JSON_DIR}/*cpp)
-file(GLOB json_head ${JSON_DIR}/json/*.h)
+set(JSON_DIR ${CMAKE_SOURCE_DIR}/src/core/jsoncpp)
+AddSharedLib(libjson ${JSON_DIR}/src ${JSON_DIR}/include "")
+set_target_properties(libjson PROPERTIES COMPILE_FLAGS -DJSON_DLL_BUILD)
 source_group("JSON" FILES ${json_head} ${json_src})
-include_directories(${JSON_DIR})
 
 # base64 config 
-set(B64_DIR ${CMAKE_SOURCE_DIR}/3rdPart/base64)
-file(GLOB base64_src ${B64_DIR}/src/*cpp)
-file(GLOB base64_head ${B64_DIR}/include/*.h)
+set(B64_DIR ${CMAKE_SOURCE_DIR}/src/core/base64)
+AddSharedLib(libb64 ${B64_DIR}/src ${B64_DIR}/include "")
 source_group("base64" FILES ${base64_head} ${base64_src})
-include_directories(${B64_DIR}/include)
-
-# megface sdk cofnig
-set(SDK_DIR ${CMAKE_CURRENT_SOURCE_DIR}/3rdPart/sdk)
 
 # ice config
-# AddFetchLib(${DEP_REPO} "ice-3.6.5")
+AddFetchLib(${DEP_REPO} "ice-3.6.5")
 
-include(LibHelper.cmake)
-AddSharedLib(testboostdll ${CMAKE_SOURCE_DIR}/src/testboostdll ${CMAKE_SOURCE_DIR}/src/testboostdll)
-AddSharedLib(detect ${CMAKE_SOURCE_DIR}/src/detect_node ${CMAKE_SOURCE_DIR}/src/detect_node)
+# AddSharedLib(testboostdll ${CMAKE_SOURCE_DIR}/src/testboostdll ${CMAKE_SOURCE_DIR}/src/testboostdll)
+# AddSharedLib(detect ${CMAKE_SOURCE_DIR}/src/detect_node ${CMAKE_SOURCE_DIR}/src/detect_node)
 
-AddSharedLib(megthreadpool ${CMAKE_SOURCE_DIR}/src/megthreadpool ${CMAKE_SOURCE_DIR}/src/megthreadpool))
+AddSharedLib(megicthreadpool ${CMAKE_SOURCE_DIR}/src/core/megicthreadpool/src ${CMAKE_SOURCE_DIR}/src/core/megicthreadpool/include "")
+AddSharedLib(libnode_exec ${CMAKE_SOURCE_DIR}/src/core/node_exec/src ${CMAKE_SOURCE_DIR}/src/core/node_exec/include "")
+AddSharedLib(libnode ${CMAKE_SOURCE_DIR}/src/core/node/src ${CMAKE_SOURCE_DIR}/src/core/node/include "libnode_exec;libjson;megicthreadpool")
+AddSharedLib(libmagicflow ${CMAKE_SOURCE_DIR}/src/core/libmagicflow/src ${CMAKE_SOURCE_DIR}/src/core/libmagicflow/include "libnode_exec;libjson;megicthreadpool;libnode")
 
 option(BuildTest "build test" ON)
 if (BuildTest)
@@ -91,6 +85,7 @@ if (BuildTest)
                              POST_BUILD
                              COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/scripts/post-build.bat"
                                       ${CMAKE_BINARY_DIR}/${CMAKE_CFG_INTDIR}/TestTool.exe
+                                      ${CMAKE_CURRENT_SOURCE_DIR}/Megvii_${PNAME}
                              VERBATIM )
     set_target_properties(${TestTool} PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/Megvii_${PNAME}")
     set_target_properties(${TestTool} PROPERTIES VS_DEBUGGER_COMMAND "${CMAKE_SOURCE_DIR}/Megvii_${PNAME}/TestTool.exe")

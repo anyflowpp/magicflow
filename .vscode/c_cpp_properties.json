@@ -3,12 +3,9 @@
         {
             "name": "Win32",
             "includePath": [
-                "${workspaceFolder}/src/**",
+                "${workspaceFolder}/src",
                 "${workspaceFolder}/3rdPart/**",
-                "${workspaceFolder}/build/_deps/**",
-                "D:/megvii/opt/boost_1_74_0",
-                "D:/Program Files (x86)/ZeroC/Ice-3.6.5/include"
-
+                "${workspaceFolder}/build/_deps/**"
             ],
             "defines": [
                 "_DEBUG",

@@ -22,6 +22,18 @@ inline HMODULE GetCurrentModule(BOOL bRef/* = FALSE*/) {
 	}
 	return NULL;
 }
+inline std::string GetCurrentModuleName() {
+	HMODULE dllHmod = GetCurrentModule(false);
+	CHAR szBuffer[MAX_PATH] = { 0 };
+	std::string dllPath;
+	if (dllHmod != NULL)
+	{
+		GetModuleFileNameA(dllHmod, szBuffer, sizeof(szBuffer) / sizeof(TCHAR) - 1);
+		dllPath = szBuffer;
+	}
+	const std::string filename = dllPath.substr(dllPath.find_last_of('\\'));
+	return filename;
+}
 inline std::string GetCurrentModulePath() {
 	HMODULE dllHmod = GetCurrentModule(false);
 	CHAR szBuffer[MAX_PATH] = { 0 };
@@ -98,7 +110,7 @@ public:
 		#else
 			if (access(dir.data(),F_OK) != -1) {
 		#endif
-			logger = std::move(spdlog::rotating_logger_st("ks-java-dll", dir + "/ZHX_ks_java_c_dll.log", 500 * 1024 * 1024, 3));
+			logger = std::move(spdlog::rotating_logger_st(GetCurrentModuleName(), dir + "/" + GetCurrentModuleName()+".log", 5 * 1024 * 1024, 3));
 			spdlog::set_default_logger(logger);
 		}
 
@@ -123,19 +135,19 @@ std::unique_ptr<Log<int>> Log<int>::instance;
 
 //???????????????????????????????????????????????????? ?????????????? ?????????????????? ???????? ???????¡§??????
 #ifndef suffix
-#define suffix(msg)  std::string(msg).append("  [ ")\
-        .append(__FILENAME__).append(":").append(std::to_string(__LINE__))\
-		.append(" ] <").append(__FUNCTION__)\
+#define suffix(msg)  std::string(msg).append("  <")\
+        .append(__FILENAME__).append("> <").append(__FUNCTION__)\
+        .append("> <").append(std::to_string(__LINE__))\
         .append(">").c_str()
 #endif
 
 #ifdef WIN32
-    #define logt(msg,...) {Log<int>::Instance(); spdlog::trace(suffix(msg),__VA_ARGS__);}
-    #define logd(msg,...) {Log<int>::Instance(); spdlog::debug(suffix(msg),__VA_ARGS__);}
-    #define logi(msg,...) {Log<int>::Instance(); spdlog::info(suffix(msg),__VA_ARGS__);}
-    #define logw(msg,...) {Log<int>::Instance(); spdlog::warn(suffix(msg),__VA_ARGS__);}
-    #define loge(msg,...) {Log<int>::Instance(); spdlog::error(suffix(msg),__VA_ARGS__);}
-    #define logc(msg,...) {Log<int>::Instance(); spdlog::critical(suffix(msg),__VA_ARGS__);}
+    #define logt(msg,...) Log<int>::Instance(); spdlog::trace(suffix(msg),__VA_ARGS__)
+    #define logd(msg,...) Log<int>::Instance(); spdlog::debug(suffix(msg),__VA_ARGS__)
+    #define logf(msg,...) Log<int>::Instance(); spdlog::info(suffix(msg),__VA_ARGS__)
+    #define logw(msg,...) Log<int>::Instance(); spdlog::warn(suffix(msg),__VA_ARGS__)
+    #define loge(msg,...) Log<int>::Instance(); spdlog::error(suffix(msg),__VA_ARGS__)
+    #define logc(msg,...) Log<int>::Instance(); spdlog::critical(suffix(msg),__VA_ARGS__)
 #else
     #define logt(msg,args...) Log::Instance(); spdlog::trace(suffix(msg), ##args)
     #define logd(msg,args...) Log::Instance(); spdlog::debug(suffix(msg),##args)
