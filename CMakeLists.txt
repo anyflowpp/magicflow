@@ -66,6 +66,8 @@ AddSharedLib(megicthreadpool ${CMAKE_SOURCE_DIR}/src/core/megicthreadpool/src ${
 AddSharedLib(libnode_exec ${CMAKE_SOURCE_DIR}/src/core/node_exec/src ${CMAKE_SOURCE_DIR}/src/core/node_exec/include "")
 AddSharedLib(libnode ${CMAKE_SOURCE_DIR}/src/core/node/src ${CMAKE_SOURCE_DIR}/src/core/node/include "libnode_exec;libjson;megicthreadpool")
 AddSharedLib(libmagicflow ${CMAKE_SOURCE_DIR}/src/core/libmagicflow/src ${CMAKE_SOURCE_DIR}/src/core/libmagicflow/include "libnode_exec;libjson;megicthreadpool;libnode")
+AddSharedLib(mynode ${CMAKE_SOURCE_DIR}/src/node-template/src ${CMAKE_SOURCE_DIR}/src/node-template/include  "libnode_exec")
+AddSharedLib(flowFactory ${CMAKE_SOURCE_DIR}/src/flowFactory/src ${CMAKE_SOURCE_DIR}/src/flowFactory/include  "libmagicflow;libnode_exec;libjson;megicthreadpool;libnode")
 
 option(BuildTest "build test" ON)
 if (BuildTest)
@@ -80,6 +82,8 @@ if (BuildTest)
     target_include_directories(${TestTool} PRIVATE ${googletest_SOURCE_DIR}/include 
         ${CMAKE_CURRENT_SOURCE_DIR}/src)
     target_link_libraries(${TestTool} gtest_main)
+    target_link_libraries(${TestTool} debug ${CMAKE_BINARY_DIR}/Debug/flowFactory.lib optimized ${CMAKE_BINARY_DIR}/Release/flowFactory.lib)
+    target_link_libraries(${TestTool} debug ${CMAKE_BINARY_DIR}/Debug/libmagicflow.lib optimized ${CMAKE_BINARY_DIR}/Release/libmagicflow.lib)
     set(pro_dir ${CMAKE_SOURCE_DIR}/build)
     add_custom_command(TARGET ${TestTool} 
                              POST_BUILD
