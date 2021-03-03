@@ -6,7 +6,7 @@
 class mynode :public node_exec{
 public:
     static std::shared_ptr<node_exec> CreateNode();
-    virtual std::shared_ptr<void> NodeExec(std::shared_ptr<void> input, void *ctx, node_info_ptr info);
+    virtual input_type_ptr NodeExec(input_type_ptr input, void *ctx, node_info_ptr info);
     virtual void* CreateThreadContext();
     virtual void DestroyThreadContext(void* ctx);
 };

@@ -7,17 +7,17 @@
 #include<condition_variable>
 #include<node_exec.h>
 #include<magic_func.h>
+#include<map>
 
 class MAGIC_E_FUNC Node {
 public:
 
-    typedef std::function<void (std::shared_ptr<void>, node_info_ptr)> callback_type;
-    typedef std::shared_ptr<void> input_type;
+    typedef std::function<void (input_type_ptr, node_info_ptr)> callback_type;
     // flow_w_ptr m_ownedToFlow;
     class input_struct
     {
     public:
-        input_type input;
+        input_type_ptr input;
         node_info_ptr info;
     };
     typedef enum
@@ -29,7 +29,7 @@ public:
     Node(std::shared_ptr<node_exec> exec);
     virtual ~Node();
 
-    virtual void setInput(input_type input, node_info_ptr info);
+    virtual void setInput(input_type_ptr input, node_info_ptr info);
 
     void setCallBack(callback_type func);
     void setNext(std::shared_ptr<Node> next);
@@ -40,11 +40,11 @@ public:
     void SetInputBufNum(int length);
     //设置线程的最大长度
     void SetThreadNum(int num);
-	std::shared_ptr<void> NodeProcess(std::shared_ptr<void> input, void *ctx, node_info_ptr info);
-	std::shared_ptr<void> NodeProcessBack(std::shared_ptr<void> input, node_info_ptr info);
+	input_type_ptr NodeProcess(input_type_ptr input, void *ctx, node_info_ptr info);
+	input_type_ptr NodeProcessBack(input_type_ptr input, node_info_ptr info);
 
 protected:
-    void thread_loop(std::shared_ptr<void> input, node_info_ptr info);
+    void thread_loop(input_type_ptr input, node_info_ptr info);
     void thread_loop();
     void ReleaseThread();
     

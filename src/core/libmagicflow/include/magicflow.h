@@ -10,7 +10,7 @@
 class MAGIC_E_FUNC flow{
 public:
     typedef std::shared_ptr<Node> RootNode_ptr;
-    typedef std::function<void (std::shared_ptr<void>, node_info_ptr)> callback_type;
+    typedef Node::callback_type callback_type;
     
     typedef std::weak_ptr<flow> flow_w_ptr;
     typedef std::shared_ptr<Node> RootNode_ptr;
@@ -27,21 +27,21 @@ public:
 	flow(const Json::Value& flowcfg, GenNodeOutWay_STD OutGenner);
     flow(const Json::Value& flowcfg);
 
-    void SetInput(std::shared_ptr<void> input,node_info_ptr info);
-    void SetFlowBack(std::shared_ptr<void> input, node_info_ptr info); 
+    void SetInput(input_type_ptr input,node_info_ptr info);
+    void SetFlowBack(input_type_ptr input, node_info_ptr info); 
 
     void IncraseInputCount();
 
     void SetCallBack(callback_type func);
-    void lastNodeCallBack(std::shared_ptr<void> input, node_info_ptr info);
+    void lastNodeCallBack(input_type_ptr input, node_info_ptr info);
 
-    std::vector<std::shared_ptr<void>> GetOutput();
+    std::vector<input_type_ptr> GetOutput();
    
     void SetCfg(flowcfg cfg);
     
 private:
     flowcfg m_flowcfg;
-	std::vector<std::shared_ptr<void>> m_output;
+	std::vector<input_type_ptr> m_output;
     callback_type  m_callback;
     int m_input_count;
     std::mutex m_input_count_mutex;

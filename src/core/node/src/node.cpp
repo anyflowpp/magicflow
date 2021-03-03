@@ -9,7 +9,7 @@ Node::~Node() {
     ReleaseThread();
 }
 
-void Node::setInput(input_type input, node_info_ptr info) {
+void Node::setInput(input_type_ptr input, node_info_ptr info) {
     if (m_run_mode == thread_mode::shared){
         std::unique_lock<std::mutex> lock(this->m_mutex);
         while (m_input_count > m_max_thread_number)
@@ -18,7 +18,7 @@ void Node::setInput(input_type input, node_info_ptr info) {
         }
         m_input_count++;
         auto &g = flow_thread_pool::GetInstance();
-        g.schedule(std::bind((void (Node::*)(std::shared_ptr<void> input, node_info_ptr info)) & Node::thread_loop, this, input, info));
+        g.schedule(std::bind((void (Node::*)(input_type_ptr input, node_info_ptr info)) & Node::thread_loop, this, input, info));
     }
     else{
         //判断线程是否存在,不存在则创建
@@ -72,7 +72,7 @@ void Node::SetThreadNum(int num) {
     m_max_thread_number = num;
 }
 
-void Node::thread_loop(std::shared_ptr<void> input, node_info_ptr info) {
+void Node::thread_loop(input_type_ptr input, node_info_ptr info) {
     if (info->status == Node_Info::NodeStatus::BREAK)
     {
         if (m_cb_func)
@@ -178,11 +178,11 @@ void Node::ReleaseThread() {
     }
 }
 
-std::shared_ptr<void> Node::NodeProcess(std::shared_ptr<void> input, void *ctx, node_info_ptr info) {
+input_type_ptr Node::NodeProcess(input_type_ptr input, void *ctx, node_info_ptr info) {
     input = m_exec->NodeExec(input,ctx,info);
     return input; 
 } 
 
-std::shared_ptr<void> Node::NodeProcessBack(std::shared_ptr<void> input, node_info_ptr info) {
+input_type_ptr Node::NodeProcessBack(input_type_ptr input, node_info_ptr info) {
     return input;
 }

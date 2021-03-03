@@ -1,6 +1,11 @@
 #include"node-template.h"
+#include<spdlog_wrap.h>
+#include<memory>
 
-std::shared_ptr<void> mynode::NodeExec(std::shared_ptr<void> input, void *ctx, node_info_ptr info){
+input_type_ptr mynode::NodeExec(input_type_ptr input, void *ctx, node_info_ptr info){
+    auto idata = input->find("input");
+    std::shared_ptr<std::string> istring = std::static_pointer_cast<std::string>(idata->second);
+    logw("input:{}",*istring);
     return input;
 }
 void* mynode::CreateThreadContext(){

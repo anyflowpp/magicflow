@@ -41,7 +41,7 @@ flow::flow(const Json::Value& flowcfg,GenNodeOutWay_STD OutGenner):m_input_count
     }
 }
 
-void flow::SetInput(std::shared_ptr<void> input,node_info_ptr info){
+void flow::SetInput(input_type_ptr input,node_info_ptr info){
     {
         std::unique_lock<std::mutex> locker(m_input_count_mutex);
         m_input_count += 1;
@@ -49,7 +49,7 @@ void flow::SetInput(std::shared_ptr<void> input,node_info_ptr info){
     auto& first = m_nodes.front();
     first->setInput(input,info);
 }
-void flow::SetFlowBack(std::shared_ptr<void> input, node_info_ptr info) {
+void flow::SetFlowBack(input_type_ptr input, node_info_ptr info) {
     auto it = m_nodes.end();
     --it;
     while(it!=m_nodes.begin()){
@@ -71,7 +71,7 @@ void flow::SetCallBack(callback_type func){
     }
     m_callback = func;
 }
-void flow::lastNodeCallBack(std::shared_ptr<void> input, node_info_ptr info){
+void flow::lastNodeCallBack(input_type_ptr input, node_info_ptr info){
     {
         std::unique_lock<std::mutex> locker(m_input_count_mutex);
         m_input_count--;
@@ -91,8 +91,8 @@ void flow::lastNodeCallBack(std::shared_ptr<void> input, node_info_ptr info){
     }
 }
 
-std::vector<std::shared_ptr<void>> flow::GetOutput(){
-	std::vector<std::shared_ptr<void>> ret;
+std::vector<input_type_ptr> flow::GetOutput(){
+	std::vector<input_type_ptr> ret;
     std::unique_lock<std::mutex> locker(m_input_count_mutex);
     if(m_flowcfg.m_mode==flowcfg::microsync){
         while(m_input_count>0){

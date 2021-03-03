@@ -5,7 +5,7 @@ node_exec::node_exec():m_ctx(nullptr){}
 
 node_exec::~node_exec(){}
 
-std::shared_ptr<void> node_exec::NodeExec(std::shared_ptr<void> input, void *ctx, node_info_ptr info){
+input_type_ptr node_exec::NodeExec(input_type_ptr input, void *ctx, node_info_ptr info){
 	return input;
 }
 
