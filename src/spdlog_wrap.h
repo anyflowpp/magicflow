@@ -142,12 +142,12 @@ std::unique_ptr<Log<int>> Log<int>::instance;
 #endif
 
 #ifdef WIN32
-    #define logt(msg,...) Log<int>::Instance(); spdlog::trace(suffix(msg),__VA_ARGS__)
-    #define logd(msg,...) Log<int>::Instance(); spdlog::debug(suffix(msg),__VA_ARGS__)
-    #define logf(msg,...) Log<int>::Instance(); spdlog::info(suffix(msg),__VA_ARGS__)
-    #define logw(msg,...) Log<int>::Instance(); spdlog::warn(suffix(msg),__VA_ARGS__)
-    #define loge(msg,...) Log<int>::Instance(); spdlog::error(suffix(msg),__VA_ARGS__)
-    #define logc(msg,...) Log<int>::Instance(); spdlog::critical(suffix(msg),__VA_ARGS__)
+    #define logt(msg,...) {Log<int>::Instance(); spdlog::trace(suffix(msg),__VA_ARGS__)   ;}   
+    #define logd(msg,...) {Log<int>::Instance(); spdlog::debug(suffix(msg),__VA_ARGS__)   ;}
+    #define logf(msg,...) {Log<int>::Instance(); spdlog::info(suffix(msg),__VA_ARGS__)    ;}
+    #define logw(msg,...) {Log<int>::Instance(); spdlog::warn(suffix(msg),__VA_ARGS__)    ;}
+    #define loge(msg,...) {Log<int>::Instance(); spdlog::error(suffix(msg),__VA_ARGS__)   ;}
+    #define logc(msg,...) {Log<int>::Instance(); spdlog::critical(suffix(msg),__VA_ARGS__);}
 #else
     #define logt(msg,args...) Log::Instance(); spdlog::trace(suffix(msg), ##args)
     #define logd(msg,args...) Log::Instance(); spdlog::debug(suffix(msg),##args)

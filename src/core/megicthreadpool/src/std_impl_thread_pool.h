@@ -18,20 +18,20 @@ private:
         }
 
         void operator()() {
-        std::function<void()> func;
-        bool dequeued;
-        while (!m_pool->m_shutdown) {
-            {
-            std::unique_lock<std::mutex> lock(m_pool->m_conditional_mutex);
-            if (m_pool->m_queue.empty()) {
-                m_pool->m_conditional_lock.wait(lock);
+            std::function<void()> func;
+            bool dequeued;
+            while (!m_pool->m_shutdown) {
+                {
+                    std::unique_lock<std::mutex> lock(m_pool->m_conditional_mutex);
+                    if (m_pool->m_queue.empty()) {
+                        m_pool->m_conditional_lock.wait(lock);
+                    }
+                    dequeued = m_pool->m_queue.dequeue(func);
+                }
+                if (dequeued) {
+                    func();
+                }
             }
-            dequeued = m_pool->m_queue.dequeue(func);
-            }
-            if (dequeued) {
-            func();
-            }
-        }
         }
     };
 
@@ -51,6 +51,10 @@ std_impl_thread_pool(std_impl_thread_pool &&) = delete;
 
 std_impl_thread_pool & operator=(const std_impl_thread_pool &) = delete;
 std_impl_thread_pool & operator=(std_impl_thread_pool &&) = delete;
+
+~std_impl_thread_pool(){
+    shutdown();
+}
 
 void init() {
     for (int i = 0; i < m_threads.size(); ++i) {

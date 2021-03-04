@@ -1,6 +1,7 @@
 #include"node.h"
 
-Node::Node(std::shared_ptr<node_exec> exec) : m_input_count(0), m_max_thread_number(2), m_bRelease_thread(false) {
+Node::Node(std::shared_ptr<node_exec> exec) : m_input_count(0), m_max_thread_number(2),
+	m_bRelease_thread(false),m_run_mode(thread_mode::shared) {
     m_cb_func = nullptr;
     m_exec = exec;
 }

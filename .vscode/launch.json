@@ -11,7 +11,7 @@
             "request": "launch",
             "program": "${workspaceFolder}/Megvii_magicflow/TestTool.exe",
             // "args": ["--gtest_filter=flowtest*"],
-            "args": ["--gtest_filter=flowplugin*"],
+            "args": ["--gtest_break_on_failure=1 --gtest_filter=flowplugin*"],
             // "args": ["--gtest_filter=boostdlltest*"],
             // "args": ["--gtest_filter=std.*"],
             // "args": ["--gtest_filter=cpuid.*"],

@@ -37,3 +37,6 @@ flow::RootNode_ptr flowFactory::NodeGenner(const Json::Value &cfg){
     auto mynode_ptr = creator();
     return std::make_shared<Node>(mynode_ptr);
 }
+flowFactory::~flowFactory(){
+    flowFactory::creators.clear();
+}
