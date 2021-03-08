@@ -5,7 +5,9 @@
             "includePath": [
                 "${workspaceFolder}/src",
                 "${workspaceFolder}/3rdPart/**",
-                "${workspaceFolder}/build/_deps/**"
+                "${workspaceFolder}/build/_deps/ffmpeg-v4.3-vs2013-v120-src/include",
+                "${workspaceFolder}/build/_deps/**",
+                "src/ffmpeg-input/include"
             ],
             "defines": [
                 "_DEBUG",

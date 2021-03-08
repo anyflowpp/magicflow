@@ -1,6 +1,6 @@
 #include"node.h"
 
-Node::Node(std::shared_ptr<node_exec> exec) : m_input_count(0), m_max_thread_number(2),
+Node::Node(std::shared_ptr<node_exec> exec) : m_input_count(0), m_max_thread_number(1),
 	m_bRelease_thread(false),m_run_mode(thread_mode::shared) {
     m_cb_func = nullptr;
     m_exec = exec;
@@ -13,7 +13,7 @@ Node::~Node() {
 void Node::setInput(input_type_ptr input, node_info_ptr info) {
     if (m_run_mode == thread_mode::shared){
         std::unique_lock<std::mutex> lock(this->m_mutex);
-        while (m_input_count > m_max_thread_number)
+        while (m_input_count >= m_max_thread_number)
         {
             m_cond.wait(lock);
         }
