@@ -1,0 +1,3 @@
+[submodule "anyflow"]
+	path = anyflow
+	url = https://github.com/anyflowpp/anyflow.git

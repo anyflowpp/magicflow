@@ -1,4 +1,5 @@
 #include"magicflow.h"
+#include"flow.h"
 
 std::shared_ptr<flow> flow::GetInstance(const Json::Value& flowcfg,GenNodeOutWay_STD OutGenner){
 	std::shared_ptr<flow> ret = std::make_shared<flow>(flowcfg,OutGenner);

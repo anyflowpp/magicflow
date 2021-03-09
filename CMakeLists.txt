@@ -9,7 +9,8 @@ execute_process(COMMAND git rev-parse --short HEAD
                 )               
 add_definitions(-DHEAD_COMMIT_ID=${GIT_COMMIT_ID})
 add_definitions(-DBOOST_BIND_GLOBAL_PLACEHOLDERS)
-include_directories(${CMAKE_SOURCE_DIR}/src)
+include_directories(${CMAKE_SOURCE_DIR}/src
+                    ${CMAKE_SOURCE_DIR}/anyflow/src/core)
 
 include(FetchLibHelper.cmake)
 include(LibHelper.cmake)
@@ -48,13 +49,13 @@ CopyLibFileToSource(opencv-249.all.dynamic x86/vc12/bin/opencv_imgproc249d.dll)
 
 include_directories(${CMAKE_SOURCE_DIR}/src/core/common)
 # json config 
-set(JSON_DIR ${CMAKE_SOURCE_DIR}/src/core/jsoncpp)
+set(JSON_DIR ${CMAKE_SOURCE_DIR}/src/jsoncpp)
 AddSharedLib(libjson ${JSON_DIR}/src ${JSON_DIR}/include "")
 set_target_properties(libjson PROPERTIES COMPILE_FLAGS -DJSON_DLL_BUILD)
 source_group("JSON" FILES ${json_head} ${json_src})
 
 # base64 config 
-set(B64_DIR ${CMAKE_SOURCE_DIR}/src/core/base64)
+set(B64_DIR ${CMAKE_SOURCE_DIR}/src/base64)
 AddSharedLib(libb64 ${B64_DIR}/src ${B64_DIR}/include "")
 source_group("base64" FILES ${base64_head} ${base64_src})
 
@@ -64,10 +65,10 @@ AddFetchLib(${DEP_REPO} "ice-3.6.5")
 # AddSharedLib(testboostdll ${CMAKE_SOURCE_DIR}/src/testboostdll ${CMAKE_SOURCE_DIR}/src/testboostdll)
 # AddSharedLib(detect ${CMAKE_SOURCE_DIR}/src/detect_node ${CMAKE_SOURCE_DIR}/src/detect_node)
 
-AddSharedLib(megicthreadpool ${CMAKE_SOURCE_DIR}/src/core/megicthreadpool/src ${CMAKE_SOURCE_DIR}/src/core/megicthreadpool/include "")
-AddSharedLib(libnode_exec ${CMAKE_SOURCE_DIR}/src/core/node_exec/src ${CMAKE_SOURCE_DIR}/src/core/node_exec/include "")
-AddSharedLib(libnode ${CMAKE_SOURCE_DIR}/src/core/node/src ${CMAKE_SOURCE_DIR}/src/core/node/include "libnode_exec;libjson;megicthreadpool")
-AddSharedLib(libmagicflow ${CMAKE_SOURCE_DIR}/src/core/libmagicflow/src ${CMAKE_SOURCE_DIR}/src/core/libmagicflow/include "libnode_exec;libjson;megicthreadpool;libnode")
+AddSharedLib(megicthreadpool ${CMAKE_SOURCE_DIR}/src/megicthreadpool/src ${CMAKE_SOURCE_DIR}/src/megicthreadpool/include "")
+AddSharedLib(libnode_exec ${CMAKE_SOURCE_DIR}/src/node_exec/src ${CMAKE_SOURCE_DIR}/src/node_exec/include "")
+AddSharedLib(libnode ${CMAKE_SOURCE_DIR}/src/node/src ${CMAKE_SOURCE_DIR}/src/node/include "libnode_exec;libjson;megicthreadpool")
+AddSharedLib(libmagicflow ${CMAKE_SOURCE_DIR}/src/libmagicflow/src ${CMAKE_SOURCE_DIR}/src/libmagicflow/include "libnode_exec;libjson;megicthreadpool;libnode")
 AddSharedLib(flowFactory ${CMAKE_SOURCE_DIR}/src/flowFactory/src ${CMAKE_SOURCE_DIR}/src/flowFactory/include  "libmagicflow;libnode_exec;libjson;megicthreadpool;libnode")
 AddSharedLib(mynode ${CMAKE_SOURCE_DIR}/src/node-template/src ${CMAKE_SOURCE_DIR}/src/node-template/include  "libnode_exec")
 AddSharedLib(ffmpeginput ${CMAKE_SOURCE_DIR}/src/ffmpeg-input/src ${CMAKE_SOURCE_DIR}/src/ffmpeg-input/include  "libnode_exec")
