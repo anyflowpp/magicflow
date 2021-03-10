@@ -19,7 +19,6 @@ include(LibHelper.cmake)
 # set(BoostLib boost_1_74_0-x86-v141)
 set(BoostLib boost_1_74_0-x86-v140)
 AddFetchLib(${DEP_REPO} ${BoostLib})
-# include(D:/megvii/opt/boost_1_74_0/boost_1_74_0-vc12-x86/Config.cmake)
 FetchContent_GetProperties(${BoostLib}) # 安装一下, 就是获取一下对应的变量
 set(Boost_USE_STATIC_LIBS ON)
 find_package(Boost REQUIRED COMPONENTS system thread)
@@ -29,25 +28,18 @@ link_directories(${Boost_LIBRARY_DIRS})
 AddFetchLib(${DEP_REPO} opencv-249.all.dynamic)
 AddFetchLib(${DEP_REPO} spdlog-1.5.0)
 AddFetchLib(${DEP_REPO} directshow-dev-lib)
-AddFetchLib(${DEP_REPO} mgliveness.nolimit)
 AddFetchLib(${DEP_REPO} ffmpeg-v4.3-vs2013-v120)
-CopyFFmpegRuntimeFiles(${CMAKE_SOURCE_DIR}/Megvii_${PNAME})
-
-set(mgflib ebg_v2.13.0.7)
-AddFetchLib(${DEP_REPO} ${mgflib})
-CopyLibFileToSource(${mgflib} ${Megface_relative_dll_path})
+CopyFFmpegRuntimeFiles(${CMAKE_SOURCE_DIR}/anyflow_${PNAME})
 
 CopyLibFileToSource(opencv-249.all.dynamic x86/vc12/bin/opencv_core249.dll)
 CopyLibFileToSource(opencv-249.all.dynamic x86/vc12/bin/opencv_highgui249.dll)
 CopyLibFileToSource(opencv-249.all.dynamic x86/vc12/bin/opencv_imgproc249.dll)
-CopyLibFileToSource(mgliveness.nolimit lib/mgliveness.dll)
 
 CopyLibFileToSource(opencv-249.all.dynamic x86/vc12/bin/opencv_core249d.dll)
 CopyLibFileToSource(opencv-249.all.dynamic x86/vc12/bin/opencv_highgui249d.dll)
 CopyLibFileToSource(opencv-249.all.dynamic x86/vc12/bin/opencv_imgproc249d.dll)
 
-
-include_directories(${CMAKE_SOURCE_DIR}/src/core/common)
+include_directories(${CMAKE_SOURCE_DIR}/src/common)
 # json config 
 set(JSON_DIR ${CMAKE_SOURCE_DIR}/src/jsoncpp)
 AddSharedLib(libjson ${JSON_DIR}/src ${JSON_DIR}/include "")
@@ -60,16 +52,13 @@ AddSharedLib(libb64 ${B64_DIR}/src ${B64_DIR}/include "")
 source_group("base64" FILES ${base64_head} ${base64_src})
 
 # ice config
-AddFetchLib(${DEP_REPO} "ice-3.6.5")
+# AddFetchLib(${DEP_REPO} "ice-3.6.5")
 
-# AddSharedLib(testboostdll ${CMAKE_SOURCE_DIR}/src/testboostdll ${CMAKE_SOURCE_DIR}/src/testboostdll)
-# AddSharedLib(detect ${CMAKE_SOURCE_DIR}/src/detect_node ${CMAKE_SOURCE_DIR}/src/detect_node)
-
-AddSharedLib(megicthreadpool ${CMAKE_SOURCE_DIR}/src/megicthreadpool/src ${CMAKE_SOURCE_DIR}/src/megicthreadpool/include "")
+AddSharedLib(magicthreadpool ${CMAKE_SOURCE_DIR}/src/magicthreadpool/src ${CMAKE_SOURCE_DIR}/src/magicthreadpool/include "")
 AddSharedLib(libnode_exec ${CMAKE_SOURCE_DIR}/src/node_exec/src ${CMAKE_SOURCE_DIR}/src/node_exec/include "")
-AddSharedLib(libnode ${CMAKE_SOURCE_DIR}/src/node/src ${CMAKE_SOURCE_DIR}/src/node/include "libnode_exec;libjson;megicthreadpool")
-AddSharedLib(libmagicflow ${CMAKE_SOURCE_DIR}/src/libmagicflow/src ${CMAKE_SOURCE_DIR}/src/libmagicflow/include "libnode_exec;libjson;megicthreadpool;libnode")
-AddSharedLib(flowFactory ${CMAKE_SOURCE_DIR}/src/flowFactory/src ${CMAKE_SOURCE_DIR}/src/flowFactory/include  "libmagicflow;libnode_exec;libjson;megicthreadpool;libnode")
+AddSharedLib(libnode ${CMAKE_SOURCE_DIR}/src/node/src ${CMAKE_SOURCE_DIR}/src/node/include "libnode_exec;libjson;magicthreadpool")
+AddSharedLib(libmagicflow ${CMAKE_SOURCE_DIR}/src/libmagicflow/src ${CMAKE_SOURCE_DIR}/src/libmagicflow/include "libnode_exec;libjson;magicthreadpool;libnode")
+AddSharedLib(flowFactory ${CMAKE_SOURCE_DIR}/src/flowFactory/src ${CMAKE_SOURCE_DIR}/src/flowFactory/include  "libmagicflow;libnode_exec;libjson;magicthreadpool;libnode")
 AddSharedLib(mynode ${CMAKE_SOURCE_DIR}/src/node-template/src ${CMAKE_SOURCE_DIR}/src/node-template/include  "libnode_exec")
 AddSharedLib(ffmpeginput ${CMAKE_SOURCE_DIR}/src/ffmpeg-input/src ${CMAKE_SOURCE_DIR}/src/ffmpeg-input/include  "libnode_exec")
 
@@ -93,9 +82,9 @@ if (BuildTest)
                              POST_BUILD
                              COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/scripts/post-build.bat"
                                       ${CMAKE_BINARY_DIR}/${CMAKE_CFG_INTDIR}/TestTool.exe
-                                      ${CMAKE_CURRENT_SOURCE_DIR}/Megvii_${PNAME}
+                                      ${CMAKE_CURRENT_SOURCE_DIR}/anyflow_${PNAME}
                              VERBATIM )
-    set_target_properties(${TestTool} PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/Megvii_${PNAME}")
-    set_target_properties(${TestTool} PROPERTIES VS_DEBUGGER_COMMAND "${CMAKE_SOURCE_DIR}/Megvii_${PNAME}/TestTool.exe")
+    set_target_properties(${TestTool} PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/anyflow_${PNAME}")
+    set_target_properties(${TestTool} PROPERTIES VS_DEBUGGER_COMMAND "${CMAKE_SOURCE_DIR}/anyflow_${PNAME}/TestTool.exe")
     set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${TestTool})
 endif()

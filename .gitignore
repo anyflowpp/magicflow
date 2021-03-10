@@ -4,7 +4,3 @@ build/
 *.exe
 *.log
 asserts/
-/Megvii_threadflow/data/
-# .vscode/
-# .vscode/*
-/src/.idea/

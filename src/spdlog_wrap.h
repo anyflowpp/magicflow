@@ -151,7 +151,7 @@ std::unique_ptr<Log<int>> Log<int>::instance;
 #else
     #define logt(msg,args...) Log::Instance(); spdlog::trace(suffix(msg), ##args)
     #define logd(msg,args...) Log::Instance(); spdlog::debug(suffix(msg),##args)
-    #define logf(msg,args...) Log::Instance(); spdlog::info(suffix(msg),##args)
+    #define logi(msg,args...) Log::Instance(); spdlog::info(suffix(msg),##args)
     #define logw(msg,args...) Log::Instance(); spdlog::warn(suffix(msg),##args)
     #define loge(msg,args...) Log::Instance(); spdlog::error(suffix(msg),##args)
     #define logc(msg,args...) Log::Instance(); spdlog::critical(suffix(msg),##args)

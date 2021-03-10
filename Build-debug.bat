@@ -9,7 +9,6 @@ if not "%ret%" == "0" (
     echo "cmake fail"
     exit 1
 ) else (
-    rem "D:\megvii\AirPortProject\build\debug\AirPortTestTool.exe"
     popd
     popd
 )

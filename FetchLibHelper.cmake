@@ -1,5 +1,5 @@
 
-set(DEP_REPO http://10.122.104.62)
+set(DEP_REPO http://www.lib_repo.com)  # 通过hosts文件 配置依赖库的获取地址
 include(FetchContent)
 
 macro(AddFetchLib addr name)
@@ -16,5 +16,5 @@ endmacro(AddFetchLib)
 
 function(CopyLibFileToSource name src) 
     FetchContent_GetProperties(${name})
-    file(COPY ${${name}_SOURCE_DIR}/${src} DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/Megvii_${PNAME})
+    file(COPY ${${name}_SOURCE_DIR}/${src} DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/anyflow_${PNAME})
 endfunction()

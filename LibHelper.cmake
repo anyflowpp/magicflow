@@ -12,6 +12,6 @@ macro(AddSharedLib libname srcdir incdir depends)
                                 POST_BUILD
                                 COMMAND "${CMAKE_SOURCE_DIR}/scripts/post-build.bat"
                                         ${CMAKE_BINARY_DIR}/${CMAKE_CFG_INTDIR}/${libname}.dll
-                                        ${CMAKE_SOURCE_DIR}/Megvii_${PNAME}
+                                        ${CMAKE_SOURCE_DIR}/anyflow_${PNAME}
                                 VERBATIM)
 endmacro(AddSharedLib)
