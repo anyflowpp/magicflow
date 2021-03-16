@@ -15,7 +15,25 @@ std::mutex s_mutex;
 std::condition_variable s_cond;
 cv::Mat s_mat;
 
-inline void backfunc(input_type_ptr input,node_info_ptr){
+typedef anyflow::flow<void>::flow_data_ptr input_type_ptr;
+typedef anyflow::node_info_ptr node_info_ptr;
+typedef std::map<
+	std::string,
+	std::shared_ptr<void>
+> input_Type;
+
+inline void backfunc(input_type_ptr _input,node_info_ptr){
+
+
+	std::shared_ptr< std::map<
+		std::string,
+		std::shared_ptr<void>
+	>
+	> input = std::static_pointer_cast<input_Type>(_input);
+	if(!input){
+		return;
+	}
+
     auto mynodeout = input->find("mynode");
     auto ffmpegout = input->find("ffmpeginput");
     std::shared_ptr<int> intout = std::static_pointer_cast<int>(mynodeout->second);
@@ -56,14 +74,13 @@ TEST(flowplugin,t1){
     flow->SetCallBack(backfunc);
 	std::thread t1(show_func);
     while(true){
-		input_type_ptr a = std::make_shared<input_type>();
+		auto a = std::make_shared<input_Type>();
 		std::string indata = "hello magflow";
 		std::shared_ptr<std::string> dp = std::make_shared<std::string>(indata);
 		a->insert(std::pair<std::string, std::shared_ptr<void>>("input", dp));
 
-		flow->SetInput(a,std::make_shared<Node_Info>());
-		//std::this_thread::sleep_for(std::chrono::milliseconds(100));
+		flow->SetInput(a,std::make_shared<anyflow::Node_Info>());
+		std::this_thread::sleep_for(std::chrono::milliseconds(100));
 	
     }
-
 };

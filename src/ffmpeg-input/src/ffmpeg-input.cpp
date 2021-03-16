@@ -5,6 +5,9 @@
 #include<thread>
 #include<sstream>
 
+typedef anyflow::flow<void>::flow_data_ptr input_type_ptr;
+typedef anyflow::node_info_ptr node_info_ptr;
+
 FFmpegInput::~FFmpegInput(){
     avcodec_close(pCodeCtx);
     avformat_close_input(&pFmtCtx);
@@ -47,7 +50,7 @@ FFmpegInput::FFmpegInput(){
                    );
 }
 
-input_type_ptr FFmpegInput::NodeExec(input_type_ptr input, void *ctx, node_info_ptr info){
+input_type_ptr FFmpegInput::NodeExec(input_type_ptr _input, void *ctx, node_info_ptr info){
     static std::mutex s_mutex;
     std::lock_guard<std::mutex> locker(s_mutex);
 
@@ -59,6 +62,18 @@ input_type_ptr FFmpegInput::NodeExec(input_type_ptr input, void *ctx, node_info_
 	std::string this_id_string;
 	ss >> this_id_string;
 	logw("ffmpeg thread id:{}", this_id_string);
+	typedef std::map<
+		std::string,
+		std::shared_ptr<void>
+	> input_Type;
+	std::shared_ptr< std::map<
+		std::string,
+		std::shared_ptr<void>
+	>
+	> input = std::static_pointer_cast<input_Type>(_input);
+    if(!input){
+        return input;
+    }
     auto idata = input->find("input");
     std::shared_ptr<std::string> istring = std::static_pointer_cast<std::string>(idata->second);
     auto read_frame_ret = av_read_frame(pFmtCtx,package);

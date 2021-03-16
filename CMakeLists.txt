@@ -10,7 +10,7 @@ execute_process(COMMAND git rev-parse --short HEAD
 add_definitions(-DHEAD_COMMIT_ID=${GIT_COMMIT_ID})
 add_definitions(-DBOOST_BIND_GLOBAL_PLACEHOLDERS)
 include_directories(${CMAKE_SOURCE_DIR}/src
-                    ${CMAKE_SOURCE_DIR}/anyflow/src/core)
+                    ${CMAKE_SOURCE_DIR}/anyflow/src)
 
 include(FetchLibHelper.cmake)
 include(LibHelper.cmake)
@@ -55,12 +55,12 @@ source_group("base64" FILES ${base64_head} ${base64_src})
 # AddFetchLib(${DEP_REPO} "ice-3.6.5")
 
 AddSharedLib(magicthreadpool ${CMAKE_SOURCE_DIR}/src/magicthreadpool/src ${CMAKE_SOURCE_DIR}/src/magicthreadpool/include "")
-AddSharedLib(libnode_exec ${CMAKE_SOURCE_DIR}/src/node_exec/src ${CMAKE_SOURCE_DIR}/src/node_exec/include "")
+AddSharedLib(libnode_exec ${CMAKE_SOURCE_DIR}/src/node_exec/src ${CMAKE_SOURCE_DIR}/src/node_exec/include "libjson")
 AddSharedLib(libnode ${CMAKE_SOURCE_DIR}/src/node/src ${CMAKE_SOURCE_DIR}/src/node/include "libnode_exec;libjson;magicthreadpool")
 AddSharedLib(libmagicflow ${CMAKE_SOURCE_DIR}/src/libmagicflow/src ${CMAKE_SOURCE_DIR}/src/libmagicflow/include "libnode_exec;libjson;magicthreadpool;libnode")
 AddSharedLib(flowFactory ${CMAKE_SOURCE_DIR}/src/flowFactory/src ${CMAKE_SOURCE_DIR}/src/flowFactory/include  "libmagicflow;libnode_exec;libjson;magicthreadpool;libnode")
-AddSharedLib(mynode ${CMAKE_SOURCE_DIR}/src/node-template/src ${CMAKE_SOURCE_DIR}/src/node-template/include  "libnode_exec")
-AddSharedLib(ffmpeginput ${CMAKE_SOURCE_DIR}/src/ffmpeg-input/src ${CMAKE_SOURCE_DIR}/src/ffmpeg-input/include  "libnode_exec")
+AddSharedLib(mynode ${CMAKE_SOURCE_DIR}/src/node-template/src ${CMAKE_SOURCE_DIR}/src/node-template/include  "libnode_exec;libjson")
+AddSharedLib(ffmpeginput ${CMAKE_SOURCE_DIR}/src/ffmpeg-input/src ${CMAKE_SOURCE_DIR}/src/ffmpeg-input/include  "libnode_exec;libjson")
 
 option(BuildTest "build test" ON)
 if (BuildTest)

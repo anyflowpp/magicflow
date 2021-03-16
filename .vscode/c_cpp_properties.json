@@ -4,10 +4,13 @@
             "name": "Win32",
             "includePath": [
                 "${workspaceFolder}/src",
-                "anyflow/src/core"
-                "${workspaceFolder}/build/_deps/ffmpeg-v4.3-vs2013-v120-src/include",
+                "anyflow/src/core",
+                // "${workspaceFolder}/build/_deps/ffmpeg-v4.3-vs2013-v120-src/include",
                 "${workspaceFolder}/build/_deps/**",
-                "src/ffmpeg-input/include"
+                "src/ffmpeg-input/include",
+                "src/magicthreadpool/include",
+                "src/node/include",
+                "src/node_exec/include"
             ],
             "defines": [
                 "_DEBUG",
