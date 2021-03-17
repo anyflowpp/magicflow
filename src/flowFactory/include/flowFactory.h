@@ -1,6 +1,6 @@
 #pragma once
-#include<libmagicflow/include/magicflow.h>
-#include"jsoncpp/include/json/json.h"
+#include<magicflow.h>
+#include"json/json.h"
 #include<vector>
 #include<common/magic_func.h>
 #include<boost/function.hpp>
