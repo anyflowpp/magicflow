@@ -1,6 +1,6 @@
 #pragma once
 #include <functional>
-#include<magic_func.h>
+#include<common/magic_func.h>
 #include<memory>
 
 class MAGIC_E_FUNC magic_thread_pool{

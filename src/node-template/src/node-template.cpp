@@ -4,6 +4,9 @@
 typedef anyflow::flow<void>::flow_data_ptr input_type_ptr;
 typedef anyflow::node_info_ptr node_info_ptr;
 
+mynode::mynode(){
+    setLogLevel(spdlog::level::debug);
+}
 input_type_ptr mynode::NodeExec(input_type_ptr _input, void *ctx, node_info_ptr info){
 
 	typedef std::map<
@@ -29,9 +32,12 @@ input_type_ptr mynode::NodeExec(input_type_ptr _input, void *ctx, node_info_ptr 
     return _input;
 }
 void* mynode::CreateThreadContext(){
-    return nullptr;
+    logi("");
+    return "context from CreateThreadContext";
 }
-void mynode::DestroyThreadContext(void* ctx){}
+void mynode::DestroyThreadContext(void* ctx){
+    logi("");
+}
 std::shared_ptr<node_exec> mynode::CreateNode(){
     return std::make_shared<mynode>();
 }

@@ -4,7 +4,8 @@
             "name": "Win32",
             "includePath": [
                 "${workspaceFolder}/src",
-                "anyflow/src/core",
+                "${workspaceFolder}/anyflow/src/core",
+                "anyflow/3rdPart/jsoncpp",
                 // "${workspaceFolder}/build/_deps/ffmpeg-v4.3-vs2013-v120-src/include",
                 "${workspaceFolder}/build/_deps/**",
                 "src/ffmpeg-input/include",

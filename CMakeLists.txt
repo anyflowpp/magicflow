@@ -11,6 +11,7 @@ add_definitions(-DHEAD_COMMIT_ID=${GIT_COMMIT_ID})
 add_definitions(-DBOOST_BIND_GLOBAL_PLACEHOLDERS)
 include_directories(${CMAKE_SOURCE_DIR}/src
                     ${CMAKE_SOURCE_DIR}/anyflow/src)
+# include_directories(${CMAKE_SOURCE_DIR}/src/common)
 
 include(FetchLibHelper.cmake)
 include(LibHelper.cmake)
@@ -39,7 +40,6 @@ CopyLibFileToSource(opencv-249.all.dynamic x86/vc12/bin/opencv_core249d.dll)
 CopyLibFileToSource(opencv-249.all.dynamic x86/vc12/bin/opencv_highgui249d.dll)
 CopyLibFileToSource(opencv-249.all.dynamic x86/vc12/bin/opencv_imgproc249d.dll)
 
-include_directories(${CMAKE_SOURCE_DIR}/src/common)
 # json config 
 set(JSON_DIR ${CMAKE_SOURCE_DIR}/src/jsoncpp)
 AddSharedLib(libjson ${JSON_DIR}/src ${JSON_DIR}/include "")

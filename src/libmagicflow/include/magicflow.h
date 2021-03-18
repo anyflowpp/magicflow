@@ -5,7 +5,7 @@
 #include"magicflowcfg.h"
 #include"node.h"
 #include"thread_pool.h"
-#include"magic_func.h"
+#include"common/magic_func.h"
 #include<core/flow.h>
 
 typedef anyflow::flow<void> flow;

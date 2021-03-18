@@ -254,7 +254,11 @@ typedef UInt64 LargestUInt;
 #include "config.h"
 #endif // if !defined(JSON_IS_AMALGAMATION)
 
-#include"magic_func.h"
+#ifdef MAGIC_EXPORT_API_DLL
+#define MAGIC_E_FUNC __declspec(dllexport)
+#else
+#define MAGIC_E_FUNC 
+#endif
 
 namespace Json {
 

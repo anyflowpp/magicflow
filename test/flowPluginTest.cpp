@@ -54,10 +54,11 @@ inline void backfunc(input_type_ptr _input,node_info_ptr){
     logw("callback:{}",*intout);
 }
 
+int i = 100;
 void show_func() {
 	cvNamedWindow("show");
 	cv::Mat m;
-	while (true) {
+	while (i>2) {
 		{
 			std::unique_lock<std::mutex> locker(s_mutex);
 			s_cond.wait(locker);
@@ -73,14 +74,15 @@ TEST(flowplugin,t1){
     
     flow->SetCallBack(backfunc);
 	std::thread t1(show_func);
-    while(true){
+    while(i--){
 		auto a = std::make_shared<input_Type>();
 		std::string indata = "hello magflow";
 		std::shared_ptr<std::string> dp = std::make_shared<std::string>(indata);
 		a->insert(std::pair<std::string, std::shared_ptr<void>>("input", dp));
 
 		flow->SetInput(a,std::make_shared<anyflow::Node_Info>());
-		std::this_thread::sleep_for(std::chrono::milliseconds(100));
+		std::this_thread::sleep_for(std::chrono::milliseconds(10));
 	
     }
+	t1.join();
 };
