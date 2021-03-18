@@ -11,7 +11,7 @@ macro(AddSharedLib libname srcdir incdir depends)
     add_custom_command(TARGET ${libname} 
                                 POST_BUILD
                                 COMMAND "${CMAKE_SOURCE_DIR}/scripts/post-build.bat"
-                                        ${CMAKE_BINARY_DIR}/${CMAKE_CFG_INTDIR}/${libname}.dll
-                                        ${CMAKE_SOURCE_DIR}/anyflow_${PNAME}
+                                        "${CMAKE_BINARY_DIR}/${CMAKE_CFG_INTDIR}/${libname}.dll"
+                                        "${CMAKE_SOURCE_DIR}/anyflow_${PNAME}"
                                 VERBATIM)
 endmacro(AddSharedLib)

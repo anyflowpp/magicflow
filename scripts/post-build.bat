@@ -6,7 +6,7 @@ set t=%t:/=\%
 
 set orgdir=%cd%
 pushd %~dp0
-    copy "%f%" "%t%"
+    copy %f% %t%
     set r=%errorlevel%
     if not %r% == 0 (
         cd %orgdir%
