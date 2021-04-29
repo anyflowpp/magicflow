@@ -105,7 +105,7 @@
         "strstream": "cpp",
         "typeindex": "cpp"
     },
-    "clang-format.executable": "D:/msys64/mingw32/bin/clang-format.exe",
+    // "clang-format.executable": "D:/msys64/mingw32/bin/clang-format.exe",
     "files.encoding":"gb2312",
     "files.autoGuessEncoding": true,
     "search.exclude": {"3rdPart":true,"build":true}
